@@ -28,12 +28,7 @@ Badges!
       <a href="#inspiration">Inspiration</a>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prereq">Prerequisites</a></li>
-        <li><a href="#docker-way">Docker</a></li>
-        <li><a href="#boring-way">Node & npm</a></li>
-      </ul>
+        <a href="#about-project">Project Goals & Scope</a>
     </li>
     <li><a href="#some-info">High-Level Overview </a>
     <li><a href="#features">Key Features</a>
@@ -44,7 +39,7 @@ Badges!
     <li><a href="#contact">Contact</a></li>
     -->
     <li><a href="#extra">Feedback</a></li>
-    <li><a href="#acknowledgments">Contributors</a></li>
+    <li><a href="#contributing">Contributing</a></li>
   </ol>
 </details>
 
@@ -56,23 +51,17 @@ Let's face it. After spending God knows how long on getting your resume and cove
 
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
 
-<h2 id="getting-started"> Getting Started :tada: </h2>
+<h2 id="about-project"> Project Goals :bow_and_arrow: & Scope :world_map: </h2>
 
-* <h3 id="prereq"> Prerequisites </h3>
+The primary goal of this project is to create a web application that allows users to track and manage their job applications online without extra hassle.
 
-    - For the simplest way, ensure [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) are installed locally.
-    - For the long way, ensure [Node](https://nodejs.org/en/download) and [npm](https://nodejs.org/en/download) are installed locally. 
+JobAppTrackr aims to provide a seamless, user-friendly and easy to navigate platform that providers job seekers with the ability to add, edit, and delete their job applications. This will enable them to track application status and upcoming interviews.
 
+For now, it is planned that the project will consist of a Single-Page Application (SPA) built with a React frontend, an ASP.NET Core API service as the backend and a MongoDB database to serve as data storage. 
 
-* <h3 id="docker-way"> Docker :whale: </h3>
-
-* <h3 id="boring-way"> Node and npm </h3>
-    
-    If you want to get things set up and running locally this way, you need to clone the project [repository](https://github.com/Bhodrolok/JobAppTrackr).
-    
-    To learn more about changing the port to something else and for configuring stuff, read <a href="#too-much-time"> this </a> section.
-
+A rough roadmap of this project can be found here.
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
+
 
 <h2 id="some-info"> High-Level Overview :question: </h2>
 
@@ -132,6 +121,8 @@ Lots of features planned ahead! <br><br>
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
 
 
-<!-- <h2 id="acknowledgments">Contributors :scroll: </h2> -->
+<h2 id="contributing">Contributing :scroll: </h2>
+
+This is an open source project. Any contributions will be greatly appreciated!
 
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
