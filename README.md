@@ -59,7 +59,9 @@ JobAppTrackr aims to provide a seamless, user-friendly and easy to navigate plat
 
 For now, it is planned that the project will consist of a Single-Page Application (SPA) built with a React frontend, an ASP.NET Core API service as the backend and a MongoDB database to serve as data storage. 
 
-A rough roadmap of this project can be found here.
+A rough roadmap of this project can be found [here](https://github.com/users/Bhodrolok/projects/1). This includes almost all of the planned, in-progress and implemented functionalities and features of JobAppTrackr.
+
+Requirements were prioritized using the [MoSCoW method](https://en.wikipedia.org/wiki/MoSCoW_method).
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
 
 
@@ -67,16 +69,18 @@ A rough roadmap of this project can be found here.
 
 1. Frontend
     * React
+    * UI design components and pages
     * Integrate FE with backend API
 
 2. Backend
     * ASP.NET Core 
-    * Exposed API service and endpoints to be consumed by FE
-    * Integrate BE with MongoDB database. 
+    * Exposed RESTful API service and endpoints to be consumed by FE
+    * JWT Authentication
+    * Integrate BE with MongoDB database
 
 3. Database
     * MongoDB
-    * 
+    * High performance, flexible document-based data model, scalability and ease of integration with FE and BE.
 
 4. Deployment
     * W.I.P.
@@ -123,6 +127,6 @@ Lots of features planned ahead! <br><br>
 
 <h2 id="contributing">Contributing :scroll: </h2>
 
-This is an open source project. Any contributions will be greatly appreciated!
+This is an open source project. Any contributions (suggestions, bug fixes, documentation improvements, translations) will be greatly appreciated!
 
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
