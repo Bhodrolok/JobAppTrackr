@@ -102,7 +102,7 @@ As this is very much a learning project, I hope to develop a more granular under
 
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
 
-<h2 id="features"> Implemented Features :high_brightness: </h2>
+<h2 id="features"> Features :high_brightness: </h2>
 
 So far!
 
