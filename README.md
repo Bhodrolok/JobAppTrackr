@@ -67,22 +67,36 @@ Requirements were prioritized using the [MoSCoW method](https://en.wikipedia.org
 
 <h2 id="some-info"> High-Level Overview :question: </h2>
 
-1. Frontend
+The web app is currently planned to function as a SPA, to provide end-users with a fast, responsive and smooth user experience loading only the necessary data instead of having to wait for a new page to load each time.
+
+As such the application architecture has been divided into 3 components: 
+
+1. Frontend (FE)
     * React
     * UI design components and pages
     * Integrate FE with backend API
 
-2. Backend
+2. Backend (BE)
     * ASP.NET Core 
     * Exposed RESTful API service and endpoints to be consumed by FE
     * JWT Authentication
     * Integrate BE with MongoDB database
 
-3. Database
+3. Database (DB)
     * MongoDB
+    * Data storage
     * High performance, flexible document-based data model, scalability and ease of integration with FE and BE.
 
-4. Deployment
+In this [SPA software architecture pattern/model](https://livebook.manning.com/book/spa-design-and-architecture/chapter-1/11), the FE will be responsible for rendering the UI, handling end-user interactions and communicating with the backend REST API to fetch and store data. 
+The BE will be responsible for processing incoming requests from the FE, handling logic and communicating with the DB. The database is responsible for storing and retrieving data for the backend to use.
+
+I decided to decouple the 3 major components so as to make the application more modular and scalable. This approach can facilitate each component being easily upgraded, replaced or even switched out with some other technology/stack without disrupting the stability of the system. 
+
+Overall, by using this architecture, the focus will be on delivering only the necessary data to the client's frontend, while keeping the backend lightweight and scalable!
+
+As this is very much a learning project, I hope to develop a more granular understanding about modern software design patterns and of the underlying technologies involved in building modern web applications, and use that knowledge to make JobAppTrackr better iteratively.
+
+* Deployment
     * W.I.P.
 
 
@@ -90,18 +104,39 @@ Requirements were prioritized using the [MoSCoW method](https://en.wikipedia.org
 
 <h2 id="features"> Implemented Features :high_brightness: </h2>
 
-So far! [here](./docs/).
+So far!
 
 <details>
     <summary> 
-        <b>Key Feature 1</b> 
+        <b>User Registration and Authentication</b> 
     </summary>
-     Lorem ipsum.
+     Enable users to create accounts and log in securely.
+</details>
+
+<details>
+    <summary> 
+        <b>Job Application Tracking</b> 
+    </summary>
+     Enable users to track job applications, and their status, efficiently throughout their job search. Status includes attributes such as URL of job posting, position, date applied,company name, resume/cover letter used to apply, etc.
+</details>
+
+<details>
+    <summary> 
+        <b>Dashboard View</b> 
+    </summary>
+     Provide users with a bird's-eye view of job application status and progress,  helping them stay organized and on top of their job search.
+</details>
+
+<details>
+    <summary> 
+        <b>Scalability</b> 
+    </summary>
+     Allow for easy scaling, upgrading and adding of new features over time as the application grows.
 </details>
 
 <p align="right">(<a href="#readme-top">back to top :arrow_up: </a>)</p>
 
-<h2 name="too-much-time"> Configuration</h2>
+<h2 name="too-much-time"> Building & Configuration</h2>
 <p>TODO!</p>
 <!--
 You can tweak the Docker Compose file and tweak the values defined in `environment`.
