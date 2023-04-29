@@ -1,16 +1,20 @@
-<h1 align="center">
+<div align="center">
+<h1>
     <a name="readme-top"></a>
     <img src="./docs/visuals/logo1.png" style="background-color:white" width="69px">
     <b> JobAppTrackr</b>
-    <p>Track and manage your job applications on the web!</h4>
 </h1>
 
 <div align="right">
 
 Badges!
 
+[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat&logo=cachet&logoColor=white)](https://github.com/Bhodrolok/JobAppTrackr/pulls)
+
+
 </div>
 
+##### Track and manage your job applications on the web!
 
 <h3> Built using </h3>
 
