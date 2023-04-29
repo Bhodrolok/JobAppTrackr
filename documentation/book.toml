@@ -9,6 +9,6 @@ description = "General documentation and usage guide for JobAppTrackr."
 [output.html]
 default-theme = "rust"
 preferred-dark-theme = "navy"
-git-repository-url = "https://github.com/bhodrolok/jobapptrackr/documentation"
+git-repository-url = "https://github.com/bhodrolok/jobapptrackr/main/documentation"
 git-repository-icon = "fa-github"
 edit-url-template = "https://github.com/bhodrolok/jobapptrackr/edit/main/documentation/{path}"
