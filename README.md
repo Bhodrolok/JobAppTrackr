@@ -9,7 +9,9 @@
 
 Badges!
 
-[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat&logo=cachet&logoColor=white)](https://github.com/Bhodrolok/JobAppTrackr/pulls)
+[![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-yellowgreen.svg?style=flat&logo=javascript&logoColor=white)](http://standardjs.com/)
+[![C# Coding Conventions](https://img.shields.io/badge/coding%20convention-standard-green.svg?style=flat&logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
+[![Pull Requests](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat&logo=cachet&logoColor=white)](https://github.com/Bhodrolok/JobAppTrackr/pulls)
 
 
 </div>
@@ -19,7 +21,6 @@ Badges!
 <h3> Built using </h3>
 
 [![react](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
-[![docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 [![.net](https://img.shields.io/badge/--blue?style=for-the-badge&logo=.net&logoColor=white)](https://protonmail.com)
 
 </div>
