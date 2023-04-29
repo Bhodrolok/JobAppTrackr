@@ -5,7 +5,7 @@
     <b> JobAppTrackr</b>
 </h1>
 
-<div align="right">
+<div align="center">
 
 Badges!
 
@@ -14,7 +14,7 @@ Badges!
 
 </div>
 
-##### Track and manage your job applications on the web!
+### Track and manage your job applications on the web!
 
 <h3> Built using </h3>
 
@@ -22,6 +22,7 @@ Badges!
 [![docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 [![.net](https://img.shields.io/badge/--blue?style=for-the-badge&logo=.net&logoColor=white)](https://protonmail.com)
 
+</div>
 
 ---
 <details>
