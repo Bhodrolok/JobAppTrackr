@@ -16,6 +16,8 @@ Badges!
 [![Pull Requests](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat&logo=cachet&logoColor=white)](https://github.com/Bhodrolok/JobAppTrackr/pulls)
 
 
+<p>Documentation available<a href="https://github.com/Bhodrolok/JobAppTrackr/tree/12-wip-documentation" target="_blank"> here </a></p>
+
 </div>
 
 ### Track and manage your job applications on the web!
