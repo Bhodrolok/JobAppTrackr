@@ -3,9 +3,12 @@
     <a name="readme-top"></a>
     <img src="./docs/visuals/logo1.png" style="background-color:white" width="69px">
     <b> JobAppTrackr</b>
+    
 </h1>
 
 <div align="center">
+
+<p>Throwaway branch for setting up ASP.NET Core Web API + MongoDB connection!</p>
 
 Badges!
 
