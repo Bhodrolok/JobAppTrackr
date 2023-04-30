@@ -1,7 +1,7 @@
 <div align="center">
 <h1>
     <a name="readme-top"></a>
-    <img src="./docs/visuals/logo1.png" style="background-color:white" width="69px">
+    <img src="./assets/visuals/logo1.png" style="background-color:white" width="69px">
     <b> JobAppTrackr</b>
 </h1>
 
@@ -16,7 +16,7 @@ Badges!
 [![Pull Requests](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat&logo=cachet&logoColor=white)](https://github.com/Bhodrolok/JobAppTrackr/pulls)
 
 
-<p>Documentation available<a href="https://github.com/Bhodrolok/JobAppTrackr/tree/12-wip-documentation" target="_blank"> here </a></p>
+<p>Documentation available<a href="https://github.com/Bhodrolok/JobAppTrackr/tree/docs" target="_blank"> here </a></p>
 
 </div>
 
