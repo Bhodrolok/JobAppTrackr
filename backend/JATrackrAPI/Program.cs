@@ -5,7 +5,10 @@ public class Program
 {
     public static async Task Main(string[] args)
     {   
-        var projectRoot = Directory.GetCurrentDirectory();  //cwd
+        // Set up env vars; Assumption: .env file located in current working directory,
+        // Filename will be "cwd + .env"; passed as argument to be loaded using the Load() method in the DotEnvLoader helper class
+        // If .env file is not found, no secrets values will be loaded into the environment.
+        var projectRoot = Directory.GetCurrentDirectory(); 
         var dotenvFile = Path.Combine(projectRoot, ".env");
         DotEnvLoader.Load(dotenvFile);
 
@@ -27,6 +30,8 @@ public class Program
 
         // MongoDB support
         builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseConfig"));
+
+        builder.Services.AddSingleton<UserService>();
 
         // Create new instance of 'WebApplication' using builder config
         var app = builder.Build();
