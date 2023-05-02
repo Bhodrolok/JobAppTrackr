@@ -3,14 +3,17 @@
     <a name="readme-top"></a>
     <img src="./assets/visuals/logo1.png" style="background-color:white" width="69px">
     <b> JobAppTrackr</b>
+    
 </h1>
 
 <div align="center">
 
+
+
 Badges!
 
-![GitHub issues](https://img.shields.io/github/issues-raw/bhodrolok/jobapptrackr?color=blue&style=plastic)
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/bhodrolok/jobapptrackr)
+[![GitHub issues](https://img.shields.io/github/issues-raw/bhodrolok/jobapptrackr?color=blue&style=plastic)](https://github.com/Bhodrolok/JobAppTrackr/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/bhodrolok/jobapptrackr)](https://github.com/Bhodrolok/JobAppTrackr/issues?q=is%3Aissue+is%3Aclosed)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-yellowgreen.svg?style=flat&logo=javascript&logoColor=white)](http://standardjs.com/)
 [![C# Coding Conventions](https://img.shields.io/badge/coding%20convention-standard-green.svg?style=flat&logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
 [![Pull Requests](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat&logo=cachet&logoColor=white)](https://github.com/Bhodrolok/JobAppTrackr/pulls)
