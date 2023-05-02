@@ -402,3 +402,7 @@ documentation/
 
 # 
 appsettings.Development.json
+
+#
+.env
+.env.*
