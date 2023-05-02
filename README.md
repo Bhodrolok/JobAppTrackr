@@ -8,7 +8,7 @@
 
 <div align="center">
 
-<p>Throwaway branch for setting up ASP.NET Core Web API + MongoDB connection!</p>
+
 
 Badges!
 
