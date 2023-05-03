@@ -18,4 +18,7 @@ public class User
 
     public string? Email { get; set; }
 
+    // Property for establishing 1-to-Many relation; List of JobData documents each represent this User's job applications 
+    // [BsonElement("JobApplications")]
+    public List<JobData>? JobApplications { get; set; }
 }

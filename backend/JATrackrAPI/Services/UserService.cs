@@ -44,6 +44,8 @@ public class UserService
     public async Task<User?> GetUserByEmailAsync(string email) =>
         await _usersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
+    // Get user account's Job Application docs
+
     // Method(s) for: CREATE
 
     // Add a new user account to Users collection
