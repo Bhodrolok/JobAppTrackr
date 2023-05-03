@@ -11,8 +11,10 @@ namespace JATrackrAPI.Services;
  */
 public class UserService
 {
-    // MongoColleciton object, representing Users Collection, for CRUDing it easily
+    // MongoCollection object, representing Users Collection, for CRUDing it easily
     private readonly IMongoCollection<User> _usersCollection;
+    // Another similar object for JobData collection 
+    private readonly IMongoCollection<JobData> _jobAppDataCollection;
 
     // Constructor to setup initial object state using Database config options class as parameter
     public UserService(IOptions<DatabaseSettings> usersDatabaseSettings) 
@@ -22,9 +24,17 @@ public class UserService
 
         var mongoDatabase = mongoClient.GetDatabase(usersDatabaseSettings.Value.DBName);
 
-        // Access data on Users Collection
+        // Access document data on Users Collection
         _usersCollection = mongoDatabase.GetCollection<User>(usersDatabaseSettings.Value.UsersCollectionName);
+        // Access document data on JobData collection that are associated with Users 
+        _jobAppDataCollection = mongoDatabase.GetCollection<JobData>(usersDatabaseSettings.Value.JobDataCollectionName);
     }
+
+    // Method(s) for: CREATE
+
+    // Add a new user account to Users collection
+    public async Task CreateUserAsync(User newUser) =>
+        await _usersCollection.InsertOneAsync(newUser);
 
     // Methods for: READ
 
@@ -44,13 +54,19 @@ public class UserService
     public async Task<User?> GetUserByEmailAsync(string email) =>
         await _usersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
-    // Get user account's Job Application docs
-
-    // Method(s) for: CREATE
-
-    // Add a new user account to Users collection
-    public async Task CreateUserAsync(User newUser) =>
-        await _usersCollection.InsertOneAsync(newUser);
+    // Get job applications (documents) associated with user account (username)
+    public async Task<List<JobData>> GetJobApplicationsForUserUNAsync(string username)
+    {
+        // Check if username matches with any existing record in User collection in the system database
+        var user = await _usersCollection.Find(x => x.Username == username).FirstOrDefaultAsync();
+        if (user == null)
+        {
+            throw new ArgumentException($"Username: {username} was not found in the system records.");
+        }
+        // var jobappsfilter = Builders<JobData>.Filter.Eq(j => j.UserId, user.Id);
+        var jobApplications = await _jobAppDataCollection.Find(x => x.UserId == user.Id).ToListAsync();
+        return jobApplications;
+    }
 
     // Methods for: UPDATE
 

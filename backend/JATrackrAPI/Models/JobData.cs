@@ -12,18 +12,19 @@ public class JobData
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public int? Id { get; set; }
+    public string? Id { get; set; }
 
     // Property for establishing Many-to-1 relation; reference 1 User data model/document associated with this document
-    public User? User { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? UserId { get; set; }
 
-    // ? => nullable reference type; does not have to be non-null
+    [BsonElement("Title")]
     public string? JobTitle { get; set; }
 
     [BsonElement("CompanyName")]
     public string? Company { get; set; }
 
     [BsonElement("JobID")]
-    public int JobId { get; set; }
+    public string? JobId { get; set; }
 }
 

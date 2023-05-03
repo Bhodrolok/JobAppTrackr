@@ -12,7 +12,8 @@ namespace JATrackrAPI.Services;
 public class JobDataService
 {
     // MongoCollection object, representing JobData Collection, for CRUDing it easily
-    private readonly IMongoCollection<User> _jobDataCollection;
+    private readonly IMongoCollection<JobData> _jobDataCollection;
+    private readonly IMongoCollection<User> _userDataCollection;
 
     // Constructor to setup initial object state using Database config options class as parameter
     public JobDataService(IOptions<DatabaseSettings> usersDatabaseSettings) 
@@ -22,13 +23,19 @@ public class JobDataService
 
         var mongoDatabase = mongoClient.GetDatabase(usersDatabaseSettings.Value.DBName);
 
-        // Access data on JobData Collection
-        _jobDataCollection = mongoDatabase.GetCollection<User>(usersDatabaseSettings.Value.JobDataCollectionName);
+        // Access data on JobData Collection and User Collection
+        _jobDataCollection = mongoDatabase.GetCollection<JobData>(usersDatabaseSettings.Value.JobDataCollectionName);
+        _userDataCollection = mongoDatabase.GetCollection<User>(usersDatabaseSettings.Value.UsersCollectionName);
     }
 
     // Method(s) for: CREATE
 
+
     // Method(s) for: READ
+
+    // Get list of all job applications stored in system (collection)
+    public async Task<List<JobData>> GetAllJobAppsAsync() =>
+        await _jobDataCollection.Find(_ => true).ToListAsync();
 
     // Method(s) for: UPDATE
 
