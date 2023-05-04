@@ -21,6 +21,10 @@ public class User
     // Property for establishing 1-to-Many relation; List of JobData documents each represent this User's job applications 
     // Either using embed JobData document ( embedded data modelling ) or use Ids to cross-reference them ( reference data modelling )
     // public List<JobData>? JobApplications { get; set; } OR
-    [BsonElement("JobIDs")]
-    public List<string>? JobApplicationIds { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    [BsonElement("JobDocumentIDs")]
+    // DIFFERENT FROM JOB IDS FROM JOB POSTINGS/DESCRIPTIONS
+    // THIS CONNECTS THE OBJECTIDs of the documents in the JobData collection
+    // WHY? ON THE RARE CHANCE THAT SOME JOB POSTINGS MAY NOT HAVE JOB IDs IN THEIR POSTING
+    public List<string>? JobDocumentIds { get; set; }
  }

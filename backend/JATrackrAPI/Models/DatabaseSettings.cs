@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace JATrackrAPI.Models;
 
 /**
@@ -13,5 +15,5 @@ public class DatabaseSettings
 
     public string? UsersCollectionName { get; set; }
     
-    public string? JobDataCollectionName { get; set;} 
+    public string? JobDataCollectionName { get; set;}
 }

@@ -15,16 +15,19 @@ public class JobData
     public string? Id { get; set; }
 
     // Property for establishing Many-to-1 relation; reference 1 User data model/document associated with this document
+    // connecting this JobApp document to a User document (user account)
     [BsonRepresentation(BsonType.ObjectId)]
+    [BsonElement("UserID")]
     public string? UserId { get; set; }
 
-    [BsonElement("Title")]
-    public string? JobTitle { get; set; }
+    [BsonElement("JobTitle")]
+    public string? Title { get; set; }
 
     [BsonElement("CompanyName")]
     public string? Company { get; set; }
 
-    [BsonElement("JobID")]
+    // From job description/posting
+    [BsonElement("JobPostingID")]
     public string? JobId { get; set; }
 }
 
