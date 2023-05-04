@@ -7,7 +7,7 @@ namespace JATrackrAPI.Services;
 /**
  * Class for handling CRUD operations on User model by interacting with the database's Users Collection; part of business logic
  * Used by DI via constructor injections
- * Based off of Microsoft's official tutorial: https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mongo-app?view=aspnetcore-7.0&tabs=visual-studio-code#add-a-crud-operations-service
+ * Based off of Microsoft's official tutorial: https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mongo-app
  */
 public class UserService
 {
@@ -54,19 +54,7 @@ public class UserService
     public async Task<User?> GetUserByEmailAsync(string email) =>
         await _usersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
-    // Get job applications (documents) associated with user account (username)
-    public async Task<List<JobData>> GetJobApplicationsForUserUNAsync(string username)
-    {
-        // Check if username matches with any existing record in User collection in the system database
-        var user = await _usersCollection.Find(x => x.Username == username).FirstOrDefaultAsync();
-        if (user == null)
-        {
-            throw new ArgumentException($"Username: {username} was not found in the system records.");
-        }
-        // var jobappsfilter = Builders<JobData>.Filter.Eq(j => j.UserId, user.Id);
-        var jobApplications = await _jobAppDataCollection.Find(x => x.UserId == user.Id).ToListAsync();
-        return jobApplications;
-    }
+
 
     // Methods for: UPDATE
 
