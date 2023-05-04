@@ -16,16 +16,16 @@ public class JobDataService
     private readonly IMongoCollection<User> _usersCollection;
 
     // Constructor to setup initial object state using Database config options class as parameter
-    public JobDataService(IOptions<DatabaseSettings> usersDatabaseSettings) 
+    public JobDataService(DatabaseSettings usersDatabaseSettings) 
     {
         // Read server instance for running database ops
-        var mongoClient = new MongoClient(usersDatabaseSettings.Value.DBConnectionString);
+        var mongoClient = new MongoClient(usersDatabaseSettings.DBConnectionString);
 
-        var mongoDatabase = mongoClient.GetDatabase(usersDatabaseSettings.Value.DBName);
+        var mongoDatabase = mongoClient.GetDatabase(usersDatabaseSettings.DBName);
 
         // Access data on JobData Collection and User Collection
-        _jobDataCollection = mongoDatabase.GetCollection<JobData>(usersDatabaseSettings.Value.JobDataCollectionName);
-        _usersCollection = mongoDatabase.GetCollection<User>(usersDatabaseSettings.Value.UsersCollectionName);
+        _jobDataCollection = mongoDatabase.GetCollection<JobData>(usersDatabaseSettings.JobDataCollectionName);
+        _usersCollection = mongoDatabase.GetCollection<User>(usersDatabaseSettings.UsersCollectionName);
     }
 
     // Method(s) for: CREATE

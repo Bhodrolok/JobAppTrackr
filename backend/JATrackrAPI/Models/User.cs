@@ -1,5 +1,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace JATrackrAPI.Models;
 
@@ -14,8 +16,10 @@ public class User
     public string? Id { get; set; }
 
     // ? => nullable reference type; does not have to be non-null
+    [Required]
     public string? Username { get; set; }
 
+    [Required]
     public string? Email { get; set; }
 
     // Property for establishing 1-to-Many relation; List of JobData documents each represent this User's job applications 

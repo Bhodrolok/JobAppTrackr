@@ -17,17 +17,17 @@ public class UserService
     private readonly IMongoCollection<JobData> _jobAppDataCollection;
 
     // Constructor to setup initial object state using Database config options class as parameter
-    public UserService(IOptions<DatabaseSettings> usersDatabaseSettings) 
+    public UserService(DatabaseSettings usersDatabaseSettings) 
     {
         // Read server instance for running database ops
-        var mongoClient = new MongoClient(usersDatabaseSettings.Value.DBConnectionString);
+        var mongoClient = new MongoClient(usersDatabaseSettings.DBConnectionString);
 
-        var mongoDatabase = mongoClient.GetDatabase(usersDatabaseSettings.Value.DBName);
+        var mongoDatabase = mongoClient.GetDatabase(usersDatabaseSettings.DBName);
 
         // Access document data on Users Collection
-        _usersCollection = mongoDatabase.GetCollection<User>(usersDatabaseSettings.Value.UsersCollectionName);
+        _usersCollection = mongoDatabase.GetCollection<User>(usersDatabaseSettings.UsersCollectionName);
         // Access document data on JobData collection that are associated with Users 
-        _jobAppDataCollection = mongoDatabase.GetCollection<JobData>(usersDatabaseSettings.Value.JobDataCollectionName);
+        _jobAppDataCollection = mongoDatabase.GetCollection<JobData>(usersDatabaseSettings.JobDataCollectionName);
     }
 
     // Method(s) for: CREATE
@@ -53,8 +53,6 @@ public class UserService
     // Get user account by email
     public async Task<User?> GetUserByEmailAsync(string email) =>
         await _usersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
-
-
 
     // Methods for: UPDATE
 
