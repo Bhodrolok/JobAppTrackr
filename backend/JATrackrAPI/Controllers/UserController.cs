@@ -51,11 +51,11 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <returns>
-    /// Single User object, if id matches with one existing in the collection. 
+    /// Single User object, if the request id matches with one existing in the collection. 
     /// </returns>
     /// <remarks>
     ///     <para>
-    ///         id = MongoDB ObjectID !
+    ///         id = MongoDB ObjectID ||
     ///         Needs to be 24 chars minimum --> ObjectID = 24 chars hex string / 12 bytes
     ///     </para>
     /// Sample request:
@@ -78,69 +78,54 @@ public class UserController : ControllerBase
         return user;
     }
 
-
     /// <summary>
-    /// Retrieve single user account by their username.
+    /// Retrieve single user account by their username, email address or both.
     /// </summary>
-    /// <param name="username"></param>
     /// <returns>
-    /// Single User object, if username matches with existing one in the collection. 
+    /// Single User object, if username or email matches existing one in the collection. 
     /// </returns>
     /// <remarks>
     ///     <para>
-    ///         Lorem ipsum.
+    ///         Needs atleast one of the queries to be non null/empty.
     ///     </para>
     /// Sample request:
     ///
-    ///     GET /api/Users/johnwickdoe
+    ///     GET /api/Users/user?username=johnwickdoe
+    ///
+    ///     GET /api/Users/user?email=winston@thecontinental.org
     ///
     /// </remarks>
-    /// <response code="200">Returns the User object</response>
-    /// <response code="404">If user with given ID not found in collection</response>
-    /// <response code="500">If server encounters internal server error</response>
-    [HttpGet("{username}/details", Name = "GetUserByUsername")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    // GET single user account by username
-    // api/user/username
-    public async Task<ActionResult<User>> GetUserByUsername(string username)
+    [HttpGet("user")]
+    public async Task<ActionResult<User>> GetUserSomehow(
+        [FromQuery(Name = "username")] string username = null,
+        [FromQuery(Name = "email")] string email = null
+        )
     {
-        var user = await _userService.GetUserByUNAsync(username);
-        if (user is null)
-            return NotFound();
-        return user;
-    }
+            if (username == null && email == null)
+            {
+                return BadRequest("At least one of `username` and `email` must be provided to locate the user account.");
+            }
 
-    /// <summary>
-    /// Retrieve single user account by their email address.
-    /// </summary>
-    /// <param name="useremail"></param>
-    /// <returns>
-    /// Single User object, if email matches with existing one in the collection. 
-    /// </returns>
-    /// <remarks>
-    ///     <para>
-    ///         Lorem ipsum.
-    ///     </para>
-    /// Sample request:
-    ///
-    ///     GET /api/Users/johnwickdoe@thecontinental.org
-    ///
-    /// </remarks>
-    /// <response code="200">Returns the User object</response>
-    /// <response code="404">If user with given email address not found in collection</response>
-    /// <response code="500">If server encounters internal server error</response>
-    [HttpGet("{useremail}/details", Name = "GetUserByEmail")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<User>> GetUserByEmail(string useremail)
-    {
-        var user = await _userService.GetUserByEmailAsync(useremail);
-        if (user is null)
-            return NotFound();
-        return user;
+            User user;
+            if (username != null)
+            {
+                user = await _userService.GetUserByUNAsync(username);
+            }
+            else if (email != null)
+            {
+                user = await _userService.GetUserByEmailAsync(email);
+            }
+            else
+            {   
+                user = await _userService.GetUserByUNAndEmailAsync(username, email);
+            }
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            return user;
     }
 
     /// <summary>
@@ -236,7 +221,7 @@ public class UserController : ControllerBase
     /// </remarks>
     /// <response code="200">Returns the newly created item</response>
     /// <response code="400">If the request is invalid or missing required fields</response>
-    [HttpPut("{username}", Name = "UpdateUserByUsername")]
+    [HttpPatch("{username}", Name = "UpdateUserByUsername")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -255,66 +240,55 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes an existing User by their ID
+    /// Deletes an existing User by their ID, Username, or both
     /// </summary>
-    /// <param name="id"></param>
     /// <returns>
     /// </returns>
     /// <remarks>
     ///     <para>
-    ///             F
+    ///             F 
     ///     </para>
     /// Sample request:
     ///
-    ///     DELETE /api/Users/645419e2c6b366ba3639e928
+    ///     DELETE /api/Users/user?id=645419e2c6b366ba3639e928
+    ///
+    ///     DELETE /api/Users/user?username=johnwickdoe
     ///
     /// </remarks>
-    /// <response code="204">no content</response>
-    /// <response code="404">user with ID not found in collection/does not exist</response>
-    [HttpDelete("{id:length(24)}", Name = "DeleteUserByID")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> DeleteUserByID(string id)
+    [HttpDelete("user")]
+    public async Task<ActionResult<User>> DeleteUserSomehow(
+        [FromQuery(Name = "id")] string id = null,
+        [FromQuery(Name = "username")] string username = null
+        )
     {
-        var user = await _userService.GetUserByIDAsync(id);
-        if (user is null)
-        {
-            return NotFound();
-        }
-        await _userService.DeleteUserByIDAsync(id);
-        return NoContent();
+            if (id == null && username == null)
+            {
+                return BadRequest("At least one of `id` and `username` must be provided to locate the user account.");
+            }
+
+            User user;
+            if (username != null)
+            {
+                user = await _userService.GetUserByUNAsync(username);
+                await _userService.DeleteUserByUNAsync(username);
+            }
+            else if (id != null)
+            {
+                user = await _userService.GetUserByIDAsync(id);
+                await _userService.DeleteUserByIDAsync(id);
+            }
+            else
+            {   
+                user = await _userService.GetUserByIDAndUNAsync(id, username);
+                await _userService.DeleteUserByIDAndUNAsync(id, username);
+            }
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            return NoContent();
     }
 
-    /// <summary>
-    /// Deletes an existing User by their username
-    /// </summary>
-    /// <param name="username"></param>
-    /// <returns>
-    /// </returns>
-    /// <remarks>
-    ///     <para>
-    ///             F
-    ///     </para>
-    /// Sample request:
-    ///
-    ///     DELETE /api/Users/winston
-    ///
-    /// </remarks>
-    /// <response code="204">no content</response>
-    /// <response code="404">user with ID not found in collection/does not exist</response>
-    [HttpDelete("{username}", Name = "DeleteUserByUN")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> DeleteUserByUN(string username)
-    {
-        var user = await _userService.GetUserByUNAsync(username);
-        if (user is null)
-        {
-            return NotFound();
-        }
-        await _userService.DeleteUserByUNAsync(username);
-        return NoContent();
-    }
 }
