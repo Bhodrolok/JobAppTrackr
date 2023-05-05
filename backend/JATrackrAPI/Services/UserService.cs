@@ -54,6 +54,33 @@ public class UserService
     public async Task<User?> GetUserByEmailAsync(string email) =>
         await _usersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
+    // Get user account by username and email
+    public async Task<User?> GetUserByUNAndEmailAsync(string username, string email)
+    {
+        var filter = Builders<User>.Filter.And(
+            Builders<User>.Filter.Eq(u => u.Username, username),
+            Builders<User>.Filter.Eq(u => u.Email, email)
+            );
+        
+        var user = await _usersCollection.Find(filter).FirstOrDefaultAsync();
+
+        return user;
+    }
+
+    // Get user account by ID and username
+    public async Task<User?> GetUserByIDAndUNAsync(string id, string username)
+    {
+        var userFilter = Builders<User>.Filter.And(
+            Builders<User>.Filter.Eq(u => u.Id, id),
+            Builders<User>.Filter.Eq(u => u.Username, username)
+        );
+        
+        var user = await _usersCollection.Find(userFilter).FirstOrDefaultAsync();
+
+        return user;
+    }
+
+
     // Methods for: UPDATE
 
     // Find an existing user account by id and Update record in Users collection
@@ -66,12 +93,23 @@ public class UserService
 
     // Methods for: DELETE
     
-    // Find existing user account by id and Delete record from Users collection
+    // Delete user record, given user id, from Users collection
     public async Task DeleteUserByIDAsync(string id) =>
         await _usersCollection.DeleteOneAsync(x => x.Id == id);
 
-    // Find existing user account by username and Delete record from Users collection
+    // Delete user record, given username, from Users collection
     public async Task DeleteUserByUNAsync(string username) =>
         await _usersCollection.DeleteOneAsync(x => x.Username == username);
+
+    // Delete user record, given user id and username, from Users collection
+    public async Task DeleteUserByIDAndUNAsync(string id, string username)
+    {
+        var userFilter = Builders<User>.Filter.And(
+            Builders<User>.Filter.Eq(u => u.Id, id),
+            Builders<User>.Filter.Eq(u => u.Username, username)
+        );
+
+        await _usersCollection.DeleteOneAsync(userFilter);
+    }
 }
 
