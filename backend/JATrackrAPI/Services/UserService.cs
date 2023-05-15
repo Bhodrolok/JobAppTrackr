@@ -91,6 +91,24 @@ public class UserService
     public async Task UpdateUserByUNAsync(string username, User updatedUser) =>
         await _usersCollection.ReplaceOneAsync(x => x.Username == username, updatedUser);
 
+    // Update user account by adding existing Job Application (JobData document)
+    public async Task AddJobAppToUserByIDAsync(string id, string jobAppDataId)
+    {
+        var user = await _usersCollection.FindOneAndUpdateAsync(
+            Builders<User>.Filter.And(
+                Builders<User>.Filter.Eq(u => u.Id, id),
+                Builders<User>.Filter.Not(
+                    Builders<User>.Filter.ElemMatch(u => u.JobDocumentIds, j => j == jobAppDataId)
+                    )
+            ),
+            Builders<User>.Update.AddToSet(u => u.JobDocumentIds, jobAppDataId)
+        );
+
+        if (user == null)
+        {
+            throw new ArgumentException($"User: {id} not found or job application already associated with user.");
+        }
+    }
     // Methods for: DELETE
     
     // Delete user record, given user id, from Users collection

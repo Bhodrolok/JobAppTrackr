@@ -1,5 +1,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace JATrackrAPI.Models;
 
@@ -18,6 +20,7 @@ public class JobData
     // connecting this JobApp document to a User document (user account)
     [BsonRepresentation(BsonType.ObjectId)]
     [BsonElement("UserID")]
+    [Required]
     public string? UserId { get; set; }
 
     [BsonElement("JobTitle")]

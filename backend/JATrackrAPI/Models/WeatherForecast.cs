@@ -1,4 +1,4 @@
-namespace JATrackrAPI.Models;
+namespace JATrackrAPI;
 
 public class WeatherForecast
 {

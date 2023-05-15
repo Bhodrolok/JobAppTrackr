@@ -30,6 +30,22 @@ public class JobDataService
 
     // Method(s) for: CREATE
 
+    // Add a new job application to JobData collection
+    // HAS TO BE ASSOCIATED WITH ONE EXISTING USER (via user id)
+    public async Task CreateJobAppAsync(string userid, JobData newJobApp)
+    {   
+        
+        var userFilter = Builders<User>.Filter.Eq(x => x.Id, userid);
+        var matchedUser = await _usersCollection.Find(userFilter).FirstOrDefaultAsync();
+
+        if (matchedUser == null)
+        {
+            throw new ArgumentException($"No matching user account in database with user id: {userid}");
+        }
+
+        await _jobDataCollection.InsertOneAsync(newJobApp);
+    }
+
 
     // Method(s) for: READ
 
@@ -37,7 +53,7 @@ public class JobDataService
     public async Task<List<JobData>> GetAllJobAppsAsync() =>
         await _jobDataCollection.Find(_ => true).ToListAsync();
 
-        // Get job applications (documents) associated with user account (username)
+    // Get list of all job applications (documents) associated with user account (username)
     public async Task<List<JobData>> GetJobApplicationsForUserUNAsync(string username)
     {
         // Check if username matches with any existing record in User collection in the system database
