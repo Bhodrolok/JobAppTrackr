@@ -3,6 +3,7 @@ using JATrackrAPI.Models;
 using JATrackrAPI.Services;
 using JATrackrAPI.Utility;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 
 #pragma warning disable CS1591
 public class Program
@@ -34,7 +35,11 @@ public class Program
         // Configure logging (TODO)
 
         // Controller support
-        services.AddControllers();
+        services.AddControllers(
+            options => {
+                options.ReturnHttpNotAcceptable = true;
+            }
+        ).AddXmlDataContractSerializerFormatters().AddNewtonsoftJson();
 
         // Swagger/OpenAPI
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle 

@@ -1,6 +1,7 @@
 using JATrackrAPI.Models;
 using JATrackrAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace JATrackrAPI.Controllers;
 
@@ -166,6 +167,7 @@ public class UserController : ControllerBase
     /// Updates an existing User by their ID
     /// </summary>
     /// <param name="id"></param>
+    /// <param name="updatedUser"></param>
     /// <returns>
     /// </returns>
     /// <remarks>
@@ -205,6 +207,7 @@ public class UserController : ControllerBase
     /// Updates an existing User by their username
     /// </summary>
     /// <param name="username"></param>
+    /// <param name="patchedUser"></param>
     /// <returns>
     /// </returns>
     /// <remarks>
@@ -214,9 +217,9 @@ public class UserController : ControllerBase
     /// Sample request:
     ///
     ///     PATCH /api/Users/johnwickdoe
-    ///     {
+    ///     [
     ///         "email": "nosequel"
-    ///     }
+    ///     ]
     ///
     /// </remarks>
     /// <response code="200">Returns the newly created item</response>
@@ -225,19 +228,26 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateUserByUsername(string username, User updatedUser)
+    public async Task<IActionResult> UpdateUserByUsername(string username, [FromBody] JsonPatchDocument<User> patchedUser)
     {
         var user = await _userService.GetUserByUNAsync(username);
         if (user is null)
         {
             return NotFound();
         }
-        updatedUser.Id = user.Id;
 
-        await _userService.UpdateUserByUNAsync(username, updatedUser);
+        patchedUser.ApplyTo(user, ModelState);
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        await _userService.UpdateUserByUNAsync(username, user);
 
         return NoContent();
     }
+
 
     /// <summary>
     /// Deletes an existing User by their ID, Username, or both
