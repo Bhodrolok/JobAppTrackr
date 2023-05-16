@@ -35,11 +35,7 @@ public class Program
         // Configure logging (TODO)
 
         // Controller support
-        services.AddControllers(
-            options => {
-                options.ReturnHttpNotAcceptable = true;
-            }
-        ).AddXmlDataContractSerializerFormatters().AddNewtonsoftJson();
+        services.AddControllers();
 
         // Swagger/OpenAPI
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle 

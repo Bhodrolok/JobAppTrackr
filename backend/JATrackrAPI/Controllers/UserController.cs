@@ -207,7 +207,7 @@ public class UserController : ControllerBase
     /// Updates an existing User by their username
     /// </summary>
     /// <param name="username"></param>
-    /// <param name="patchedUser"></param>
+    /// <param name="updatedUser"></param>
     /// <returns>
     /// </returns>
     /// <remarks>
@@ -228,22 +228,16 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateUserByUsername(string username, [FromBody] JsonPatchDocument<User> patchedUser)
+    public async Task<IActionResult> UpdateUserByUN(string username, User updatedUser)
     {
         var user = await _userService.GetUserByUNAsync(username);
         if (user is null)
         {
             return NotFound();
         }
+        updatedUser.Id = user.Id;
 
-        patchedUser.ApplyTo(user, ModelState);
-
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        await _userService.UpdateUserByUNAsync(username, user);
+        await _userService.UpdateUserByUNAsync(username, updatedUser);
 
         return NoContent();
     }
