@@ -157,6 +157,14 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateUser(User newUser)
     {
+        // Basic conditional to check if there is an existing user with the same username (or email)
+        if (await _userService.UserExists(newUser.Username, newUser.Email))
+        {
+            // Think its better to have the service do the checking and return just the boolean rather than
+            // use something like GetUserByIDOrUNAsync here...
+            return BadRequest("User with the same username or email already exists in the database!");
+        }
+
         await _userService.CreateUserAsync(newUser);
 
         // Create 201 OK Response with newly created User object, location header will point to this newly created resource 
@@ -260,6 +268,9 @@ public class UserController : ControllerBase
     ///
     /// </remarks>
     [HttpDelete("user")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<User>> DeleteUserSomehow(
         [FromQuery(Name = "id")] string id = null,
         [FromQuery(Name = "username")] string username = null
@@ -267,7 +278,7 @@ public class UserController : ControllerBase
     {
             if (id == null && username == null)
             {
-                return BadRequest("At least one of `id` and `username` must be provided to locate the user account.");
+                return BadRequest("Must provide atleast one of `id` and `username` to locate the user account!");
             }
 
             User user;

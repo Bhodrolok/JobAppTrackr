@@ -53,7 +53,7 @@ public class JobDataService
     public async Task<List<JobData>> GetAllJobAppsAsync() =>
         await _jobDataCollection.Find(_ => true).ToListAsync();
 
-    // Get list of all job applications (documents) associated with user account (username)
+    // Get list of all job applications (documents) associated with user account through username
     public async Task<List<JobData>> GetJobApplicationsForUserUNAsync(string username)
     {
         // Check if username matches with any existing record in User collection in the system database

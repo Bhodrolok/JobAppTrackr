@@ -54,7 +54,7 @@ public class UserService
     public async Task<User?> GetUserByEmailAsync(string email) =>
         await _usersCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
-    // Get user account by username and email
+    // Get user account by username AND email
     public async Task<User?> GetUserByUNAndEmailAsync(string username, string email)
     {
         var filter = Builders<User>.Filter.And(
@@ -67,7 +67,7 @@ public class UserService
         return user;
     }
 
-    // Get user account by ID and username
+    // Get user account by ID AND username
     public async Task<User?> GetUserByIDAndUNAsync(string id, string username)
     {
         var userFilter = Builders<User>.Filter.And(
@@ -78,6 +78,19 @@ public class UserService
         var user = await _usersCollection.Find(userFilter).FirstOrDefaultAsync();
 
         return user;
+    }
+
+    // Check if there is existing user account with username OR email
+    public async Task<bool> UserExists(string username, string email)
+    {
+        var userFilter = Builders<User>.Filter.Or(
+        Builders<User>.Filter.Eq(u => u.Username, username),
+        Builders<User>.Filter.Eq(u => u.Email, email)
+        );
+
+        var existingUser = await _usersCollection.Find(userFilter).FirstOrDefaultAsync();
+
+        return existingUser != null;
     }
 
 
