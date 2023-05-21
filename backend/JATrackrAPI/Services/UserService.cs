@@ -1,6 +1,7 @@
 using JATrackrAPI.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace JATrackrAPI.Services;
 
@@ -80,7 +81,23 @@ public class UserService
         return user;
     }
 
-    // Check if there is existing user account with username OR email
+    // Check if there is existing user account with username OR ID provided ONLY ONE of them as parameter
+    public async Task<bool> DoesUserExist(string IDorUN)
+    {   
+        // Check if the parameter is a objectId type
+        // https://mongodb.github.io/mongo-csharp-driver/2.7/apidocs/html/M_MongoDB_Bson_ObjectId_TryParse.htm
+        if (ObjectId.TryParse(IDorUN, out var objectId)){
+            var existingUser = await GetUserByIDAsync(IDorUN);
+            return existingUser != null;
+        }
+        else{
+            // Assumption that it is an username otherwise
+            var existingUser = await GetUserByUNAsync(IDorUN);
+            return existingUser != null;
+        }
+    }
+
+    // Check if there is existing user account with username OR email provided BOTH of them as parameters
     public async Task<bool> UserExists(string username, string email)
     {
         var userFilter = Builders<User>.Filter.Or(
@@ -92,6 +109,33 @@ public class UserService
 
         return existingUser != null;
     }
+
+    // Get list of all job application (docs) associated to an existing user account
+    public async Task<List<JobData>> GetAllJobAppsUserAsync(string username)
+    {
+        User user;
+        if ( await DoesUserExist(username))
+        {
+            user = await GetUserByUNAsync(username);
+        }else
+        {
+            throw new Exception("User not found in database!");
+        }
+
+        var jobDocumentIds = user.JobDocumentIds ?? new List<string>();
+
+        if (jobDocumentIds.Count == 0)
+        {
+            // No associated job apps found for User, return empty list
+            return new List<JobData>();
+        }
+
+        var jobFilter = Builders<JobData>.Filter.In(jd => jd.Id, jobDocumentIds);
+        var jobApps = await _jobAppDataCollection.Find(jobFilter).ToListAsync();
+
+        return jobApps;
+    }
+
 
 
     // Methods for: UPDATE
@@ -106,6 +150,7 @@ public class UserService
 
     // Update user account by adding existing Job Application (JobData document)
     public async Task AddJobAppToUserByIDAsync(string id, string jobAppDataId)
+    // jobAppDataId != JD ID posted by HR
     {
         var user = await _usersCollection.FindOneAndUpdateAsync(
             Builders<User>.Filter.And(
@@ -122,6 +167,7 @@ public class UserService
             throw new ArgumentException($"User: {id} not found or job application already associated with user.");
         }
     }
+
     // Methods for: DELETE
     
     // Delete user record, given user id, from Users collection

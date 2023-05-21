@@ -129,6 +129,31 @@ public class UserController : ControllerBase
             return user;
     }
 
+
+    /// <summary>
+    /// Retrieve list of all job applications associated with a User account provided their username.
+    /// </summary>
+    /// <returns>
+    /// List of Job Application documents tied to the User object, if username matches existing one in the collection. 
+    /// </returns>
+    /// <remarks>
+    ///     <para>
+    ///         Username can't be empty
+    ///     </para>
+    /// Sample request:
+    ///
+    ///     GET /api/Users/johnwickdoe/JobApps
+    ///
+    /// </remarks>
+    /// <response code="200">Returns list of job data objects</response>
+    /// <response code="500">If server encounters internal server error</response>
+    [HttpGet("{username}/JobApps")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<List<JobData>> GetUserJobApps(string username)=>
+            await _userService.GetAllJobAppsUserAsync(username);
+
     /// <summary>
     /// Create new User object
     /// </summary>
