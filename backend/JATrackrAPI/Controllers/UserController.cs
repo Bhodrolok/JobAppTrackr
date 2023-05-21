@@ -165,6 +165,7 @@ public class UserController : ControllerBase
             return BadRequest("User with the same username or email already exists in the database!");
         }
 
+        // As the UN/Email properties are both 'Required', controller 'automatically' validates that they are not empty; else BadRequest-ed
         await _userService.CreateUserAsync(newUser);
 
         // Create 201 OK Response with newly created User object, location header will point to this newly created resource 

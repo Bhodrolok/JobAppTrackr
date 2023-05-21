@@ -16,10 +16,10 @@ public class User
     public string? Id { get; set; }
 
     // ? => nullable reference type; does not have to be non-null
-    [Required]
+    [Required(ErrorMessage = "Username cannot be empty!")]
     public string? Username { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Email address cannot be empty!")]
     public string? Email { get; set; }
 
     // Property for establishing 1-to-Many relation; List of JobData documents each represent this User's job applications 
