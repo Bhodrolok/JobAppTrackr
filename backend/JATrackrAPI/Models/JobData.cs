@@ -1,5 +1,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace JATrackrAPI.Models;
 
@@ -8,19 +10,27 @@ namespace JATrackrAPI.Models;
  * Associated with each User specific to their Job Applications 
  * Attributes of this entity are defined by properties such as job title, company, link to job posting, etc. 
  */
-public class JobDataModel
+public class JobData
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public int? Id { get; set; }
+    public string? Id { get; set; }
 
-    // ? => nullable reference type; does not have to be non-null
-    public string? JobTitle { get; set; }
+    // Property for establishing Many-to-1 relation; reference 1 User data model/document associated with this document
+    // connecting this JobApp document to a User document (user account)
+    [BsonRepresentation(BsonType.ObjectId)]
+    [BsonElement("UserID")]
+    [Required]
+    public string? UserId { get; set; }
+
+    [BsonElement("JobTitle")]
+    public string? Title { get; set; }
 
     [BsonElement("CompanyName")]
     public string? Company { get; set; }
 
-    [BsonElement("JobID")]
-    public int JobId { get; set; }
+    // From job description/posting
+    [BsonElement("JobPostingID")]
+    public string? JobId { get; set; }
 }
 
