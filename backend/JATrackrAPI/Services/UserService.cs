@@ -136,6 +136,34 @@ public class UserService
         return jobApps;
     }
 
+    // Get single job application (doc) associated to an existing user account by the JobData doc objectID
+    public async Task<JobData?> GetJobAppForUNAsync(string username, string JobAppId)
+    {
+        // Would do to good to refactor this later (TODO?)
+        User user;
+        if ( await DoesUserExist(username))
+        {
+            user = await GetUserByUNAsync(username);
+        } else
+        {
+            throw new Exception("User not found in database!");
+        }
+
+        var jobDocumentIds = user.JobDocumentIds ?? new List<string>();
+
+        // Check if the input jobappid (object ID) matches with any in the full list of all job apps associated to this user
+        if ( !jobDocumentIds.Contains(JobAppId) )
+        {
+            return null;
+        }
+
+        var jobFilter = Builders<JobData>.Filter.Eq(jd => jd.Id, JobAppId);
+        var jobApp = await _jobAppDataCollection.Find(jobFilter).FirstOrDefaultAsync();
+
+        return jobApp;
+    }
+
+
 
 
     // Methods for: UPDATE

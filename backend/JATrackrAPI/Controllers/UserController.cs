@@ -19,6 +19,7 @@ public class UserController : ControllerBase
         _userService = userService;
         _jobDataService = jobDataService;
     }
+
     // Define correct attributes to handle respective HTTP verbs (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) and dispatch to relevant executable endpoints
 
     /// <summary>
@@ -76,7 +77,7 @@ public class UserController : ControllerBase
         var user = await _userService.GetUserByIDAsync(id);
         if (user is null)
             return NotFound();
-        return user;
+        return Ok(user);
     }
 
     /// <summary>
@@ -97,6 +98,10 @@ public class UserController : ControllerBase
     ///
     /// </remarks>
     [HttpGet("user")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<User>> GetUserSomehow(
         [FromQuery(Name = "username")] string username = null,
         [FromQuery(Name = "email")] string email = null
@@ -126,7 +131,7 @@ public class UserController : ControllerBase
                 return NotFound();
             }
             
-            return user;
+            return Ok(user);
     }
 
 
@@ -145,7 +150,7 @@ public class UserController : ControllerBase
     ///     GET /api/Users/johnwickdoe/JobApps
     ///
     /// </remarks>
-    /// <response code="200">Returns list of job data objects</response>
+    /// <response code="200">Returns list of job data objects for the user</response>
     /// <response code="500">If server encounters internal server error</response>
     [HttpGet("{username}/JobApps")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -154,6 +159,47 @@ public class UserController : ControllerBase
     public async Task<List<JobData>> GetUserJobApps(string username)=>
             await _userService.GetAllJobAppsUserAsync(username);
 
+
+    /// <summary>
+    /// Retrieve single job application associated with a user account by their unique identifier (id), provided their username.
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="jobappid"></param>
+    /// <returns>
+    /// Single JobData object, if the request id matches with one existing in the collection. 
+    /// </returns>
+    /// <remarks>
+    ///     <para>
+    ///         id = MongoDB ObjectID ||
+    ///         Needs to be 24 chars minimum --> ObjectID = 24 chars hex string / 12 bytes
+    ///     </para>
+    /// Sample request:
+    ///
+    ///     GET /api/Users/johnwickdoe/JobApps/6453c6a403d31d4429e7a00d
+    ///
+    /// </remarks>
+    /// <response code="200">Returns the user object </response>
+    /// <response code="404">If user with given ID not found in collection</response>
+    /// <response code="500">If server encounters internal server error</response>
+    [HttpGet("{username}/JobApps/{jobappid:length(24)}", Name = "GetUserJobAppByID")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<JobData>> GetUserJobAppByID(string username, string jobappid)
+    {
+        var jobApp = await _userService.GetJobAppForUNAsync(username, jobappid);
+
+        if (jobApp == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(jobApp);
+    }
+
+    
+
+    
     /// <summary>
     /// Create new User object
     /// </summary>
@@ -163,7 +209,8 @@ public class UserController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     <para>
-    ///         Username and email address fields are required and cannot be null. The (object)id will be auto generated when it is created anyways.
+    ///         Username and email address fields are required and cannot be null. 
+    ///         The (object)id will be auto generated when it is created anyways and the JobDocumentIds can be an empty array.
     ///     </para>
     /// Sample request:
     ///
@@ -193,7 +240,7 @@ public class UserController : ControllerBase
         // As the UN/Email properties are both 'Required', controller 'automatically' validates that they are not empty; else BadRequest-ed
         await _userService.CreateUserAsync(newUser);
 
-        // Create 201 OK Response with newly created User object, location header will point to this newly created resource 
+        // 201 OK Response with newly created User object, location header will point to this newly created resource 
         return CreatedAtAction(nameof(GetUserByID), new { id =  newUser.Id }, newUser);
     }
 
@@ -206,7 +253,7 @@ public class UserController : ControllerBase
     /// </returns>
     /// <remarks>
     ///     <para>
-    ///             Can be partial updated, only the changed fields that are received for the User will be modified, other fields will remain unchanged.
+    ///             Can be partial updated, only the changed fields that are received for the User will be modified, other fields will remain unchanged. (NOT FULLY ACCURATE BTW)
     ///     </para>
     /// Sample request:
     ///
@@ -221,7 +268,8 @@ public class UserController : ControllerBase
     // PUT = complete replace document; PATCH = modify existing (partial update; https://stackoverflow.com/a/30118175/21074625)
     [HttpPatch("{id:length(24)}", Name = "UpdateUserByID")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateUserByID(string id, User updatedUser)
     {
