@@ -163,6 +163,27 @@ public class UserService
         return jobApp;
     }
 
+     // Get single job application (doc) associated to an existing user account by the JobData doc objectID
+     // TODO: Combine this and GetJobAppForUNAsync into one merged function that implements respective operation based on JobData doc objectID or JobID
+    public async Task<JobData?> GetJobAppForIDAsync(string userid, string jobid)
+    {
+        // Would do to good to refactor this later (TODO?)
+        User user;
+        if ( await DoesUserExist(userid))
+        {
+            user = await GetUserByIDAsync(userid);
+        } else
+        {
+            throw new Exception("User not found in database!");
+        }
+
+        var jobFilter = Builders<JobData>.Filter.Eq(jd => jd.JobId, jobid);
+        var jobApp = await _jobAppDataCollection.Find(jobFilter).FirstOrDefaultAsync();
+
+        return jobApp;
+    }
+
+
 
 
 

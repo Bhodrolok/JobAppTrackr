@@ -21,6 +21,7 @@ public class UserController : ControllerBase
     }
 
     // Define correct attributes to handle respective HTTP verbs (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) and dispatch to relevant executable endpoints
+    // TODO: Standardize return-types across all [Response body + headers]
 
     /// <summary>
     /// Retrieve all registered users in the system 
@@ -164,13 +165,13 @@ public class UserController : ControllerBase
     /// Retrieve single job application associated with a user account by their unique identifier (id), provided their username.
     /// </summary>
     /// <param name="username"></param>
-    /// <param name="jobappid"></param>
+    /// <param name="jobappid">This is NOT the same as the actual Job ID from Job Posting/Description!</param>
     /// <returns>
     /// Single JobData object, if the request id matches with one existing in the collection. 
     /// </returns>
     /// <remarks>
     ///     <para>
-    ///         id = MongoDB ObjectID ||
+    ///         jobappid = MongoDB ObjectID ||
     ///         Needs to be 24 chars minimum --> ObjectID = 24 chars hex string / 12 bytes
     ///     </para>
     /// Sample request:
@@ -178,7 +179,7 @@ public class UserController : ControllerBase
     ///     GET /api/Users/johnwickdoe/JobApps/6453c6a403d31d4429e7a00d
     ///
     /// </remarks>
-    /// <response code="200">Returns the user object </response>
+    /// <response code="200">Returns the entire JobData object </response>
     /// <response code="404">If user with given ID not found in collection</response>
     /// <response code="500">If server encounters internal server error</response>
     [HttpGet("{username}/JobApps/{jobappid:length(24)}", Name = "GetUserJobAppByID")]
@@ -188,16 +189,48 @@ public class UserController : ControllerBase
     public async Task<ActionResult<JobData>> GetUserJobAppByID(string username, string jobappid)
     {
         var jobApp = await _userService.GetJobAppForUNAsync(username, jobappid);
-
         if (jobApp == null)
         {
             return NotFound();
         }
-
         return Ok(jobApp);
     }
 
-    
+
+    /// <summary>
+    /// Retrieve single job application associated with a user account (account id-d) by their job id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="jobid"></param>
+    /// <returns>
+    /// Single JobData object, if the request id matches with one existing in the collection. 
+    /// </returns>
+    /// <remarks>
+    ///     <para>
+    ///         id and jobid = MongoDB ObjectID ||
+    ///         Needs to be 24 chars minimum --> ObjectID = 24 chars hex string / 12 bytes
+    ///     </para>
+    /// Sample request:
+    ///
+    ///     GET /api/Users/6453c25803d31d4429e7a00a/JobApps/6453c6a403d31d4429e7a00d
+    ///
+    /// </remarks>
+    /// <response code="200">Returns the entire JobData object </response>
+    /// <response code="404">If user with given ID not found in collection</response>
+    /// <response code="500">If server encounters internal server error</response>
+    [HttpGet("{id:length(24)}/JobApps/{jobappid:length(24)}", Name = "GetUserJobAppByIDID")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<JobData>> GetUserJobAppByJobID(string id, string jobappid)
+    {
+        var jobApp = await _userService.GetJobAppForIDAsync(id, jobappid);
+        if (jobApp == null)
+        {
+            return NotFound();
+        }
+        return Ok(jobApp);
+    }
 
     
     /// <summary>
