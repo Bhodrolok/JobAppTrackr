@@ -201,7 +201,7 @@ public class UserController : ControllerBase
     /// Retrieve single job application associated with a user account (account id-d) by their job id.
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="jobid"></param>
+    /// <param name="jobappid"></param>
     /// <returns>
     /// Single JobData object, if the request id matches with one existing in the collection. 
     /// </returns>
